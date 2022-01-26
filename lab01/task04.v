@@ -22,10 +22,10 @@ module task04 (
 				  STATE_SRAM_READ = 2'b10;
  
 	// Implement transition from state to next state
-	always @(posedge clk) begin
+	always @(clk) begin
 		if (rst) begin
 			state <= STATE_IDLE;
-			next_state <= STATE_SRAM_READ_INIT;
+			next_state <= next_state;
 		end else begin
 			state <= next_state;
 		end
@@ -35,7 +35,7 @@ module task04 (
 	//                 how to change the state
 	// Hint: Pay attention to the list of signals which trigger the block.
 	//       When do we want it to run?
-	always @(*) begin
+	always @(state, address, rst, clk) begin
 		case (state)
 			STATE_IDLE: begin
 				we = FALSE;
@@ -44,13 +44,13 @@ module task04 (
 				if (address !== 4'dz) begin
 					next_state = STATE_SRAM_READ_INIT;
 				end else begin
-					next_state = state;
+					next_state = STATE_IDLE;
 				end
 			end
 			STATE_SRAM_READ_INIT: begin
 				we = FALSE;
 				cs = TRUE;
-				oe = FALSE;
+				oe = TRUE;
 				next_state = STATE_SRAM_READ;
 			end
 			STATE_SRAM_READ: begin
@@ -61,7 +61,7 @@ module task04 (
 					out_buffer = rom_buffer; // if data is NOT SRAM, take it from ROM
 					// set flags to write data in SRAM
 					we = TRUE; 
-					oe = TRUE; 
+					oe = FALSE; 
 					next_state = STATE_IDLE;
 				end
 			end
@@ -74,7 +74,7 @@ module task04 (
 	
 	// Create an instance for each memory module
 	// Hint: Pay attention to the address width
-	 task01 rom (address, data);
-	 task03 sram (clk, oe, cs, we, {3'b0, address}, data);
+	 task01 rom (address, rom_buffer);
+	 task03 sram (clk, oe, cs, we, {3'b0, address}, sram_buffer);
 
 endmodule

@@ -14,7 +14,7 @@ module task03 (
 	reg [7:0] buffer;
 	
 	// Implement writing and reading in/from SRAM
-	always @(posedge clk) begin
+	always @(clk) begin
 		if (cs) begin
 			if (we) begin
 				memory[address] = data;

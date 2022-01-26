@@ -337,11 +337,11 @@ module control_unit #(
 			   end else if (opcode_type == `TYPE_CALL_ISR)
             begin
                 alu_rd <= sreg;
-                alu_rr <= (8'b1 << `FLAGS_I);
+                alu_rr <= ~(8'b1 << `FLAGS_I);
 				end else if (opcode_type == `TYPE_RETI)
             begin
                 alu_rd <= sreg;
-                alu_rr <= ~(8'b1 << `FLAGS_I);
+                alu_rr <= (8'b1 << `FLAGS_I);
             end else begin
                 alu_rd <= rd_data;
                 alu_rr <= rr_data;

@@ -12,28 +12,29 @@ module signal_generation_unit (
 	 /* STS */
 	 /* register reads */
     assign signals
-	 [`CONTROL_REG_RR_READ] = 
+     [`CONTROL_REG_RR_READ] = 
             (pipeline_stage == `STAGE_ID) &&
-            (opcode_group[`GROUP_ALU_TWO_OP]) ||
-				(opcode_type == `TYPE_STS) ||
-				(opcode_type == `TYPE_LD_Y);
+            (opcode_group[`GROUP_ALU_TWO_OP] ||
+             opcode_type == `TYPE_STS ||
+             opcode_type == `TYPE_MOV ||
+             opcode_type == `TYPE_LD_Y);
 				
     assign signals[`CONTROL_REG_RR_WRITE] = 0;
 	 
-    assign signals[`CONTROL_REG_RD_READ] =
+assign signals[`CONTROL_REG_RD_READ] =
             (pipeline_stage == `STAGE_ID) &&
-            (opcode_group[`GROUP_ALU]) ||
-				(opcode_type == `TYPE_LD_Y);
+            (opcode_group[`GROUP_ALU] ||
+             opcode_type == `TYPE_LD_Y);
 				
     assign signals[`CONTROL_REG_RD_WRITE] = 
-				/* LDI */
-				/* register writes */
+                /* LDI */
+                /* register writes */
             (pipeline_stage == `STAGE_WB) &&
-            (opcode_group[`GROUP_ALU]) ||
-				(opcode_type == `TYPE_LDI) ||
-				(opcode_type == `TYPE_LDS) ||
-				(opcode_type == `TYPE_LD_Y) ||
-				(opcode_type == `TYPE_MOV);
+            (opcode_group[`GROUP_ALU] ||
+             opcode_type == `TYPE_LDI ||
+             opcode_type == `TYPE_LDS ||
+             opcode_type == `TYPE_LD_Y ||
+             opcode_type == `TYPE_MOV);
 	
     /* Memory interface logic */
 	 /* LOADs */

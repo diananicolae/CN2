@@ -225,7 +225,7 @@ module decode_unit #(
                 //  Trebuie sa decodificam SEI.
                 //  - HINT: SEI se comporta ca un SBI cu operandul bit hard-codat. Ce valoare trebuie
                 //  sa ia acest operand?
-					 16'b0001_10??_????_????: begin
+				16'b1001_0100_0111_1000: begin
                     opcode_type = `TYPE_SEI;
                     opcode_rd   = {R_ADDR_WIDTH{1'bx}};
                     opcode_rr   = {R_ADDR_WIDTH{1'bx}};
@@ -306,7 +306,8 @@ module decode_unit #(
     assign opcode_group[`GROUP_LOAD_INDIRECT] =
         (opcode_type == `TYPE_LD_Y) ||
         (opcode_type == `TYPE_POP) ||
-        (opcode_type == `TYPE_RET);
+        (opcode_type == `TYPE_RET) ||
+        (opcode_type == `TYPE_RETI);
     assign opcode_group[`GROUP_LOAD] =
         opcode_group[`GROUP_LOAD_DIRECT] ||
         opcode_group[`GROUP_LOAD_INDIRECT];
@@ -316,7 +317,8 @@ module decode_unit #(
 
     assign opcode_group[`GROUP_STORE_INDIRECT] =
         (opcode_type == `TYPE_PUSH)  ||
-        (opcode_type == `TYPE_RCALL);
+        (opcode_type == `TYPE_RCALL) ||
+        (opcode_type == `TYPE_CALL_ISR);
     assign opcode_group[`GROUP_STORE] =
         opcode_group[`GROUP_STORE_DIRECT] ||
         opcode_group[`GROUP_STORE_INDIRECT];
@@ -325,7 +327,9 @@ module decode_unit #(
         (opcode_type == `TYPE_PUSH)     ||
         (opcode_type == `TYPE_POP)      ||
         (opcode_type == `TYPE_RCALL)    ||
-        (opcode_type == `TYPE_RET);
+        (opcode_type == `TYPE_RET)      ||
+        (opcode_type == `TYPE_CALL_ISR) ||
+        (opcode_type == `TYPE_RETI);
 
     assign opcode_group[`GROUP_MEMORY] =
         (opcode_group[`GROUP_LOAD] ||
@@ -340,7 +344,9 @@ module decode_unit #(
         (opcode_type == `TYPE_BRBC)  ||
         (opcode_type == `TYPE_RJMP)  ||
         (opcode_type == `TYPE_RCALL) ||
-        (opcode_type == `TYPE_RET);
+        (opcode_type == `TYPE_RET)   ||
+        (opcode_type == `TYPE_CALL_ISR)||
+        (opcode_type == `TYPE_RETI);
 
     assign opcode_group[`GROUP_IO_READ] =
         (opcode_type  == `TYPE_IN)  ||   // access any I/O address
