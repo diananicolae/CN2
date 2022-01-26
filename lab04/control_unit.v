@@ -155,27 +155,27 @@ module control_unit #(
 				    actualizarea corespunzatoare pentru PC (program counter). Aveti grija la dimensiunea variabilelor. */
 					 
             `TYPE_BRBS: begin
-					if (sreg[opcode_bit] == 1) begin
-						next_program_counter <= program_counter + opcode_imd[I_ADDR_WIDTH-1:0];
-					end else begin
-						next_program_counter <= program_counter; // dummy implementation
-					end
+				if (sreg[opcode_bit] == 1) begin
+					next_program_counter <= program_counter + opcode_imd[I_ADDR_WIDTH-1:0];
+				end else begin
+					next_program_counter <= program_counter;
+				end
             end
 				
             `TYPE_BRBC: begin
-					if (sreg[opcode_bit] == 0) begin
-						next_program_counter <= program_counter + opcode_imd[I_ADDR_WIDTH-1:0];
-					end else begin
-						next_program_counter <= program_counter; // dummy implementation
-					end
+				if (sreg[opcode_bit] == 0) begin
+					next_program_counter <= program_counter + opcode_imd[I_ADDR_WIDTH-1:0];
+				end else begin
+					next_program_counter <= program_counter;
+				end
             end
 				
             `TYPE_RJMP: begin
-					 next_program_counter <= program_counter; // dummy implementation
+				next_program_counter <= program_counter + opcode_imd[I_ADDR_WIDTH-1:0];
             end
 				
-				default: begin
-					next_program_counter <= program_counter;
+			default: begin
+				next_program_counter <= program_counter;
             end
 				endcase
         end
