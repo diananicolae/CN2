@@ -1,0 +1,54 @@
+    DDRA        equ 0x01
+    PORTA       equ 0x02
+
+
+main:
+    ; seteaza portul A ca iesire
+    ldi R17, 255
+    out DDRA, R17
+
+    ldi R17, 0
+    out PORTA, R17
+
+    sbi PORTA, 7
+    sbi PORTA, 0
+
+    cbi PORTA, 7
+    cbi PORTA, 0
+
+    sbi PORTA, 6
+    sbi PORTA, 1
+
+    cbi PORTA, 6
+    cbi PORTA, 1
+
+    sbi PORTA, 5
+    sbi PORTA, 2
+
+    cbi PORTA, 5
+    cbi PORTA, 2
+
+    sbi PORTA, 4
+    sbi PORTA, 3
+
+    cbi PORTA, 4
+    cbi PORTA, 3
+
+    sbi PORTA, 5
+    sbi PORTA, 2
+
+    cbi PORTA, 5
+    cbi PORTA, 2
+
+    sbi PORTA, 6
+    sbi PORTA, 1
+
+    cbi PORTA, 6
+    cbi PORTA, 1
+
+    sbi PORTA, 7
+    sbi PORTA, 0
+
+    cbi PORTA, 7
+    cbi PORTA, 0
+    

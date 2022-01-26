@@ -1,0 +1,20 @@
+DDRA        equ 0x01
+PORTA       equ 0x02
+TCCR0A      equ 0x19
+TCCR0B      equ 0x18
+TIMSK       equ 0x26
+OCR0A       equ 0x16
+
+
+main:
+    ; fast pwm - wgm = 3 = 0b011
+    ; com0a = 0b10
+    ldi r17, 0b10000011
+    out TCCR0A, r17
+
+    ; cs = 001
+    ldi r17, 0b00000001
+    out TCCR0B, r17
+
+    ldi r17, 63
+    out OCR0A, r17

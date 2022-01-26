@@ -1,0 +1,20 @@
+    DDRA        equ 0x01
+    DDRB        equ 0x05
+    PORTA       equ 0x02
+    PINB        equ 0x04
+
+main:
+    ; seteaza portul A ca iesire
+    ldi R17, 255
+    out DDRA, R17
+
+    ; seteaza portul B ca intrare
+    ldi R17, 0
+    out DDRB, R17
+
+    loop:
+        ; citeste val de pe pinul B
+        in R17, PINB
+        ; scrie val pe portul A
+        out PORTA, R17
+        rjmp loop

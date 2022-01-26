@@ -1,0 +1,101 @@
+-------- task 3
+
+int sum (int a, int b) {
+  return a+b;
+}
+ 
+int main () {
+  int a, b, d;
+  a = 10;
+  b = 2;
+  d = sum (a, b);
+}
+
+
+0: rjmp main
+sum:
+1:	pop r22 // return addr
+2:	pop r21 // return addr
+3:	pop r20 // a
+4:	pop r19 // b
+5:	add r16, r19 // d
+6:	push r19
+7:	push r20
+8:	push r21
+9:	push r22
+10:	ret
+main:
+11:	ldi r18, 10 // a
+12:	ldi r17, 2 // b
+13:	push r17
+14:	push r18
+15:	rcall sum
+16:	pop r18
+17:	pop r17
+
+-------- task 4
+
+rjmp main
+	func1:
+		pop R18      // ret addr
+		pop R19      // ret addr
+		pop R17      // r17 = 13
+		ldi R16, 1   // r16 = 1
+		ldi R20, 0   // r20 = 0
+	loop:
+		add R20, R17   // r20 += r17
+		sub R17, R16   // r17--
+		brne loop      // r17 =! 0
+		push R19       // ret addr
+		push R18       // ret addr
+		ret
+	main:
+		ldi R20, 13   // r20 = 13
+		sts 65, R20   // mem[65] = 13
+		ldi R20, 39   // r20 = 39
+		lds R20, 65   // r20 = mem[65] = 13
+		push R20      // push 13
+		rcall func1
+		nop
+
+-------- task 5
+
+void func1(int s, int n) {
+  if (n == 0)
+      return;
+  s += n;
+  func1(s, n - 1);
+}
+ 
+int main () {
+  int s = 0, n = 13;
+  func1(s, n);
+}
+
+rjmp main
+	func1:
+		pop R20         // ret addr
+		pop R19         // ret addr
+		pop R18         // pop arg s
+		pop R17         // pop arg n
+		add R18, R17    // s += n
+		dec R17         // n--
+		breq exit_func1 // if (n == 0) return
+		push R17        // push arg n
+		push R18        // push arg s
+		rcall func1
+		push R19        // ret addr
+		push R20        // ret addr
+	exit_func1:
+		ret
+	main:
+		ldi R20, 13    // R20 = 13
+		sts 65, R20    // mem[65] = 13
+		ldi R20, 39    // R20 = 39
+		lds R20, 65    // R20 = mem[65] = 13
+		ldi R21, 0     // R21 = 0
+		push R20       // push n = 13
+		push R21       // push s = 0
+		rcall func1
+		nop
+
